@@ -5,19 +5,17 @@ public class Category {
     private int pid;
     private String name;
     private String descr;
-    private int cno;
-    private boolean isLeaf;
+    private boolean isleaf;
     private int grade;
 
     public Category(){}
 
-    public Category(int id, int pid, String name, String descr, int cno, boolean isLeaf, int grade) {
+    public Category(int id, int pid, String name, String descr, boolean isleaf, int grade) {
         this.id = id;
         this.pid = pid;
         this.name = name;
         this.descr = descr;
-        this.cno = cno;
-        this.isLeaf = isLeaf;
+        this.isleaf = isleaf;
         this.grade = grade;
     }
 
@@ -53,14 +51,6 @@ public class Category {
         this.descr = descr;
     }
 
-    public int getCno() {
-        return cno;
-    }
-
-    public void setCno(int cno) {
-        this.cno = cno;
-    }
-
     public int getGrade() {
         return grade;
     }
@@ -70,11 +60,11 @@ public class Category {
     }
 
     public boolean isLeaf() {
-        return isLeaf;
+        return isleaf;
     }
 
     public void setLeaf(boolean leaf) {
-        isLeaf = leaf;
+        isleaf = leaf;
     }
 
     @Override
@@ -84,7 +74,7 @@ public class Category {
                 ", pid=" + pid +
                 ", name='" + name + '\'' +
                 ", descr='" + descr + '\'' +
-                ", cno=" + cno +
+                ", isleft='" + isleaf + '\'' +
                 ", grade=" + grade +
                 '}';
     }

@@ -14,6 +14,7 @@ function addListener( type , handler )  {
  }
 //=== END =====
 
+
 //=========================================
 // Hold the top item
 //=========================================
@@ -64,14 +65,14 @@ userstack = new stack() ;
 //=========================================
 //Image List
 //=========================================
-treeview_box_0_none = "../images/4_clos.gif"  ;
-treeview_box_0_line = "../images/4_none.gif" ;
-treeview_box_2_open = "../images/2_open.gif" ;
-treeview_box_2_none = "../images/2_none.gif" ;
-treeview_box_2_close = "../images/2_clos.gif" ;
-treeview_box_1_open = "../images/3_open.gif" ;
-treeview_box_1_none = "../images/3_none.gif" ;
-treeview_box_1_close = "../images/3_clos.gif" ;
+treeview_box_0_none = "images/4_clos.gif"  ;
+treeview_box_0_line = "images/4_none.gif" ;
+treeview_box_2_open = "images/2_open.gif" ;
+treeview_box_2_none = "images/2_none.gif" ;
+treeview_box_2_close = "images/2_clos.gif" ;
+treeview_box_1_open = "images/3_open.gif" ;
+treeview_box_1_none = "images/3_none.gif" ;
+treeview_box_1_close = "images/3_clos.gif" ;
 
 //===============================================
 //Class : nodeitem
@@ -233,7 +234,9 @@ function nodeitem_show()  {
 	if( this.parent == null )  
   	   for(var i in document.all){
           if (document.all[i].tagName == "BODY")
+          //if (document.all[i].tagName == "show")
           {
+          	//alert(str);
 		      document.all[i].insertAdjacentHTML( "AfterBegin" , str ) ;
               break
           }
@@ -408,7 +411,7 @@ function deleteNode(  key )   {
 // Events
 //===========================================================
 function box_on_click( obj )  {
-    nodeitems[ obj.nodeid ].boxclick() ;
+    nodeitems[obj.nodeid].boxclick();
 }
 
 tv_curlable = null ;

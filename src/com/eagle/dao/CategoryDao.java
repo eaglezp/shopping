@@ -12,49 +12,128 @@ import java.util.List;
 
 public class CategoryDao {
 
-    public static List<User> getUsers(){
-        List<User> userList = new ArrayList<>();
+    public static Category loadCategoryById(int id){
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
+        Category category = null;
         try {
             connection = DB.getConn();
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("select * from user order by id desc");
-            while(resultSet.next()){
-                User user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setUsername(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
-                user.setPhoneNum(resultSet.getString("phone"));
-                user.setAddr(resultSet.getString("addr"));
-                user.setRdate(resultSet.getTimestamp("rdate"));
-                userList.add(user);
+            String sql = "select * from category where id ="+id;
+            resultSet = statement.executeQuery(sql);
+            if(resultSet.next()){
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setPid(resultSet.getInt("pid"));
+                category.setName(resultSet.getString("name"));
+                category.setDescr(resultSet.getString("descr"));
+                category.setLeaf(resultSet.getInt("isleaf") == 1 ? true:false);
+                category.setGrade(resultSet.getInt("grade"));
             }
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DB.close(resultSet);
             DB.close(statement);
             DB.close(connection);
         }
-        return userList;
+        return category;
     }
 
+    public static void addChildCategory(int pid, String name, String descr){
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DB.getConn();
+            statement = DB.getStatement(connection);
+            resultSet = statement.executeQuery("select * from category where id="+pid);
+            resultSet.next();
+            int parentGrade = resultSet.getInt("grade");
+            connection.setAutoCommit(false);
+            String sql = "insert into category values(null,?,?,?,?,?)";
+            System.out.println(sql);
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1,pid);
+            pstmt.setString(2,name);
+            pstmt.setString(3, descr);
+            pstmt.setInt(4, 1);
+            pstmt.setInt(5, parentGrade+1);
+            pstmt.execute();
+            //更新父节点isleaf
+            DB.executeUpdate(statement,"update category set isleaf = 0 where id="+pid);
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            DB.close(resultSet);
+            DB.close(statement);
+            DB.close(pstmt);
+            DB.close(connection);
+        }
+    }
 
-    public static void deleteUsers(int id){
+    public static List<Category> getCategories(){
+       List<Category> catgories = new ArrayList<>();
+       getCategories(catgories,0);
+       return catgories;
+    }
+
+    public static void getCategories(List<Category> categories, int id){
         Connection connection = null;
         Statement statement = null;
-        try{
+        ResultSet resultSet = null;
+        try {
             connection = DB.getConn();
             statement = connection.createStatement();
-            statement.execute("delete from user where id="+id);
-        }catch (SQLException e){
+            String sql = "select * from category where pid ="+id;
+            System.out.println(sql);
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                Category category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setPid(resultSet.getInt("pid"));
+                category.setName(resultSet.getString("name"));
+                category.setDescr(resultSet.getString("descr"));
+                category.setLeaf(resultSet.getInt("isleaf") == 1 ? true:false);
+                category.setGrade(resultSet.getInt("grade"));
+                categories.add(category);
+                if(!category.isLeaf()){
+                    getCategories(categories,category.getId());
+                }
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
+            DB.close(resultSet);
             DB.close(statement);
             DB.close(connection);
         }
+    }
+
+
+    public static void addCategory(Category category){
+        CategoryDao.saveCategory(category);
+    }
+
+    public static void addTopCategory(String name, String descr){
+        Category category = new Category();
+        category.setId(-1);
+        category.setPid(0);
+        category.setName(name);
+        category.setDescr(descr);
+        category.setGrade(1);
+        category.setLeaf(true);
+        addCategory(category);
     }
 
     public static void saveCategory(Category category) {
@@ -62,15 +141,15 @@ public class CategoryDao {
         PreparedStatement pstmt = null;
         try {
             connection = DB.getConn();
-
-            String sql = "insert into category values(?,?,?,?,?,?)";
+            String sql = "";
+            sql = "insert into category values(null,?,?,?,?,?)";
+            System.out.println(sql);
             pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, category.getId());
-            pstmt.setInt(2, category.getPid());
-            pstmt.setString(3, category.getName());
-            pstmt.setString(4, category.getDescr());
-            pstmt.setInt(4, category.isLeaf()? 1:0);
-            pstmt.setInt(5, category.getGrade());
+            pstmt.setInt(1, category.getPid());
+            pstmt.setString(2, category.getName());
+            pstmt.setString(3, category.getDescr());
+            pstmt.setInt(4, category.getGrade());
+            pstmt.setInt(5, category.isLeaf() ? 1:0);
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,67 +159,4 @@ public class CategoryDao {
         }
     }
 
-    public static User isValidate(String username, String password) throws UserNotFoundException,PasswordNotCorrection{
-        Connection connection = null;
-        ResultSet resultSet = null;
-        Statement statement = null;
-        User user = null;
-        try {
-            connection = DB.getConn();
-            String sql = "select * from user where username='"+username+"'";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            if(!resultSet.next()){
-                throw new UserNotFoundException();
-            }else if(!resultSet.getString("password").equals(password)){
-                throw new PasswordNotCorrection();
-            }else{
-                user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setUsername(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
-                user.setPhoneNum(resultSet.getString("phone"));
-                user.setAddr(resultSet.getString("addr"));
-                user.setRdate(resultSet.getTimestamp("rdate"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DB.close(statement);
-            DB.close(connection);
-        }
-        return user;
-    }
-
-    public static boolean updateUser(User user){
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        boolean isOk = false;
-        try {
-            connection = DB.getConn();
-
-            String sql = "update user set username=?,password=?,phone=?,addr=? where id=?";
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getPhoneNum());
-            pstmt.setString(4, user.getAddr());
-            pstmt.setInt(5,user.getId());
-            isOk = pstmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DB.close(pstmt);
-            DB.close(connection);
-        }
-        return isOk;
-    }
-
-    public static boolean userExists(String username){
-        return true;
-    }
-
-    public static boolean isPasswordCorrect(String username, String password){
-        return true;
-    }
 }
