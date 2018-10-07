@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.eagle.entity.User" %>
-<%@ page import="com.eagle.dao.UserManager" %>
+<%@ page import="com.eagle.dao.UserDao" %>
 <%--
   Created by IntelliJ IDEA.
   User: Peng
@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="_sessioncheck.jsp"%>
 <%
-    List<User> userList = UserManager.getUsers();
+    List<User> userList = UserDao.getUsers();
 %>
 <html>
 <head>

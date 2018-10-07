@@ -1,4 +1,4 @@
-<%@ page import="com.eagle.dao.UserManager" %>
+<%@ page import="com.eagle.dao.UserDao" %>
 <%@include file="_sessioncheck.jsp"%>
 <%--
   Created by IntelliJ IDEA.
@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     int id = Integer.parseInt(request.getParameter("id"));
-    UserManager.deleteUsers(id);
+    UserDao.deleteUsers(id);
 %>
 <html>
 <head>
