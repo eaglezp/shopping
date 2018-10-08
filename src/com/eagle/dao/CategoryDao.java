@@ -88,6 +88,112 @@ public class CategoryDao {
        return catgories;
     }
 
+    public static int getCategories(List<Category> categories,int pageNo,int pageSize) {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        ResultSet countResultSet = null;
+        int pageCount = 0;
+        try {
+            connection = DB.getConn();
+            statement = connection.createStatement();
+            String countSql = "select count(1) from category";
+            countResultSet = statement.executeQuery(countSql);
+            if(countResultSet.next()){
+                pageCount = (countResultSet.getInt(1)+pageSize-1)/pageSize;
+            }
+            String sql = "select * from category limit "+(pageNo-1)*pageSize+","+pageSize;
+            System.out.println("sql:"+sql);
+            resultSet = statement.executeQuery(sql);
+            initCategoryFromResultSet(categories, resultSet);
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            DB.close(resultSet);
+            DB.close(countResultSet);
+            DB.close(statement);
+            DB.close(connection);
+        }
+        return pageCount;
+    }
+
+    private static void initCategoryFromResultSet(List<Category> categories, ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            Category category = new Category();
+            category.setId(resultSet.getInt("id"));
+            category.setPid(resultSet.getInt("pid"));
+            category.setName(resultSet.getString("name"));
+            category.setDescr(resultSet.getString("descr"));
+            category.setLeaf(resultSet.getInt("isleaf") == 1 ? true : false);
+            category.setGrade(resultSet.getInt("grade"));
+            categories.add(category);
+        }
+    }
+
+    public static List<Category> getCategories(int pageNo,int pageSize) {
+        List<Category> categories = new ArrayList<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String sql = "select * from category limit "+(pageNo-1)*pageSize+","+pageSize;
+            System.out.println("sql:"+sql);
+            resultSet = statement.executeQuery(sql);
+            initCategoryFromResultSet(categories, resultSet);
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            DB.close(resultSet);
+            DB.close(statement);
+            DB.close(connection);
+        }
+        return categories;
+    }
+
+
+    public static List<Category> tree(List<Category> categories, int id){
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DB.getConn();
+            statement = connection.createStatement();
+            String sql = "select * from category where pid ="+id;
+            System.out.println(sql);
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                Category category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setPid(resultSet.getInt("pid"));
+                category.setName(resultSet.getString("name"));
+                category.setDescr(resultSet.getString("descr"));
+                category.setLeaf(resultSet.getInt("isleaf") == 1 ? true : false);
+                category.setGrade(resultSet.getInt("grade"));
+                categories.add(category);
+                if (!category.isLeaf()) {
+                    tree(categories, category.getId());
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            DB.close(resultSet);
+            DB.close(statement);
+            DB.close(connection);
+        }
+        return categories;
+    }
+
     public static void getCategories(List<Category> categories, int id){
         Connection connection = null;
         Statement statement = null;

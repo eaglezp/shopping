@@ -2,6 +2,7 @@
 <%@ page import="com.eagle.entity.Product" %>
 <%@ page import="com.eagle.XManager.ProductManager" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.eagle.dao.CategoryDao" %>
 <%--
   Created by IntelliJ IDEA.
   User: Peng
@@ -41,8 +42,8 @@
         <td align="center">描述</td>
         <td align="center">市场价</td>
         <td align="center">会员价</td>
-        <td align="center">上价日期</td>
-        <td align="center">类别ID</td>
+        <td align="center">上架日期</td>
+        <td align="center">类别</td>
         <td align="center">处理</td>
     </tr>
     <%
@@ -55,7 +56,7 @@
         <td><%=product.getNormalprice()%></td>
         <td><%=product.getMemberprice()%></td>
         <td><%=product.getPdate()%></td>
-        <td><%=product.getCategoryid()%></td>
+        <td><%=product.getCategory().getName()%></td>
         <td>
             <a href="deleteproduct.jsp?id=<%=product.getId()%>">删除</a>&nbsp;
             <a href="modifyproduct.jsp?id=<%=product.getId()%>">修改</a>

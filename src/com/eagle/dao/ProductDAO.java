@@ -1,5 +1,6 @@
 package com.eagle.dao;
 
+import com.eagle.entity.Category;
 import com.eagle.entity.Product;
 import com.eagle.util.DB;
 
@@ -21,10 +22,12 @@ public class ProductDAO {
             try {
                 connection = DB.getConn();
                 statement = connection.createStatement();
-                String sql = "select * from product";
+                String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, "
+                                    +"c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade "
+                             +"from product p join category c on p.categoryid=c.id";
                 System.out.println(sql);
                 resultSet = statement.executeQuery(sql);
-                initProductFromResult(productList, resultSet);
+                initProductFromResult(productList,resultSet);
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -47,6 +50,14 @@ public class ProductDAO {
             product.setMemberprice(resultSet.getDouble("memberprice"));
             product.setPdate(resultSet.getTimestamp("pdate"));
             product.setCategoryid(resultSet.getInt("categoryid"));
+            Category category = new Category();
+            category.setId(resultSet.getInt("cid"));
+            category.setPid(resultSet.getInt("pid"));
+            category.setName(resultSet.getString("cname"));
+            category.setDescr(resultSet.getString("cdescr"));
+            category.setLeaf(resultSet.getInt("isleaf")== 1? true:false);
+            category.setGrade(resultSet.getInt("grade"));
+            product.setCategory(category);
             productList.add(product);
         }
     }
@@ -59,10 +70,13 @@ public class ProductDAO {
         try {
             connection = DB.getConn();
             statement = connection.createStatement();
-            String sql = "select * from product limit "+(pageNo-1)*pageSize+","+ pageSize;
+            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, "
+                    +"c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade "
+                    +"from product p join category c on p.categoryid=c.id";
+            sql += " limit "+(pageNo-1)*pageSize+","+ pageSize;
             System.out.println(sql);
             resultSet = statement.executeQuery(sql);
-            initProductFromResult(productList, resultSet);
+            initProductFromResult(productList,resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -87,10 +101,14 @@ public class ProductDAO {
             if(totalResultSet.next()){
                 pageCount = (totalResultSet.getInt(1) + pageSize -1) / pageSize;
             }
-            String sql = "select * from product limit "+(pageNo-1)*pageSize+","+ pageSize;
+
+            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, "
+                    +"c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade "
+                    +"from product p join category c on p.categoryid=c.id";
+            sql += " limit "+(pageNo-1)*pageSize+","+ pageSize;
             System.out.println(sql);
             resultSet = statement.executeQuery(sql);
-            initProductFromResult(productList, resultSet);
+            initProductFromResult(productList,resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

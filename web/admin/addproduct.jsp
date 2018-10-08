@@ -14,6 +14,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="_sessioncheck.jsp"%>
 <%
+    int categoryid = 0;
+    String categoryidStr = request.getParameter("categoryid");
+    if(categoryidStr != null && !categoryidStr.trim().equals("")){
+        categoryid = Integer.parseInt(categoryidStr);
+    }
     List<Category> categoryList = CategoryDao.getCategories();
     String action = request.getParameter("action");
     if(action != null && action.equals("addproduct")){
@@ -21,7 +26,6 @@
         String descr = new String(request.getParameter("descr").getBytes("ISO8859-1"), "utf-8");
         double normalPrice = Double.parseDouble(request.getParameter("normalprice"));
         double memberPrice = Double.parseDouble(request.getParameter("memberprice"));
-        int categoryid = Integer.parseInt(request.getParameter("categoryid"));
         Product product = new Product();
         product.setId(-1);
         product.setName(name);
@@ -70,7 +74,7 @@
                                 preStr += "--";
                             }
                     %>
-                            <option value="<%=category.getId()%>"><%=preStr+category.getName()%></option>
+                            <option value="<%=category.getId()%>" <%=category.getId() == categoryid ? "selected":""%> <%=category.getGrade() !=3 ? "disabled":""%>><%=preStr+category.getName()%></option>
                     <%
                         }
                     %>

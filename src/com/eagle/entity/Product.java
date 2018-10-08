@@ -10,7 +10,15 @@ public class Product {
   private double memberprice;
   private java.sql.Timestamp pdate;
   private int categoryid;
+  private Category category;
 
+  public Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
+  }
 
   public long getId() {
     return id;
