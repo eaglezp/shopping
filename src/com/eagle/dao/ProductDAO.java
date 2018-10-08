@@ -156,6 +156,7 @@ public class ProductDAO {
             if(endDate != null){
                 sql += " and pdate <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endDate)+"'";
             }
+            sql += "limit "+(pageNo-1)*pageSize+","+pageSize;
             System.out.println("sql-----"+sql);
 
 
@@ -183,8 +184,72 @@ public class ProductDAO {
                             int pageNo,
                             int pageSize){
 
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        int pageCount = 0;
+        try {
+            connection = DB.getConn();
+            statement = connection.createStatement();
+            String sql = "select * from product where 1=1 ";
 
-        return 0;
+            if(ids != null && ids.length >0){
+                sql += " and categoryid in (";
+                for(int i=0;i<ids.length;i++){
+                    if(i<ids.length-1){
+                        sql += ",";
+                    }else {
+                        sql += ids[i];
+                    }
+                }
+                sql +=") ";
+            }
+
+            if(keyword != null && !keyword.trim().equals("")){
+                sql += " and name like '%"+keyword+"%'"+" or descr like '%"+keyword+"%'";
+            }
+
+            if(lowNormalPrice >= 0){
+                sql += " and normalprice >="+lowNormalPrice;
+            }
+            if(highNormalPrice >= 0){
+                sql += " and normalprice <="+highNormalPrice;
+            }
+            if(lowMemberPrice >= 0){
+                sql += " and memberprice >="+lowMemberPrice;
+            }
+            if(highMemberPrice >= 0){
+                sql += " and memberprice <="+highMemberPrice;
+            }
+
+            if(startDate != null){
+                sql += " and pdate >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startDate)+"'";
+            }
+            if(endDate != null){
+                sql += " and pdate <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endDate)+"'";
+            }
+
+            String countSql = sql.replaceFirst("select \\*","select count(*)");
+            System.out.println("countSql-----"+countSql);
+
+            sql += "limit "+(pageNo-1)*pageSize+","+pageSize;
+            System.out.println("sql-----"+sql);
+
+            ResultSet countResultSet = statement.executeQuery(countSql);
+            if(countResultSet.next()){
+                pageCount = (countResultSet.getInt(1) + pageSize -1) / pageSize;
+            }
+
+            resultSet = statement.executeQuery(sql);
+            initProductFromResult(productList, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DB.close(resultSet);
+            DB.close(statement);
+            DB.close(connection);
+        }
+        return pageCount;
     }
 
     public List<Product> findProducts(String name){

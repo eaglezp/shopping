@@ -4,6 +4,7 @@
 <%@ page import="com.eagle.entity.Category" %>
 <%@ page import="com.eagle.dao.CategoryDao" %>
 <%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.util.ArrayList" %>
 <%--
   Created by IntelliJ IDEA.
   User: Peng
@@ -17,6 +18,15 @@
     List<Category> categoryList = CategoryDao.getCategories();
     String action = request.getParameter("action");
     if(action != null && action.equals("complexsearch")) {
+        int pageNo = 1;
+        String pageNoStr = request.getParameter("pageNo");
+        if(pageNoStr != null && !pageNoStr.trim().equals("")){
+            pageNo = Integer.parseInt(pageNoStr);
+        }
+        if(pageNo < 0){
+            pageNo = 1;
+        }
+
         String keyword = new String(request.getParameter("keyword").getBytes("ISO8859-1"), "utf-8");
         double lowNormalPrice = Double.parseDouble(request.getParameter("lownormalprice"));
         double highNormalPrice = Double.parseDouble(request.getParameter("highnormalprice"));
@@ -29,14 +39,16 @@
         Timestamp enddate = null;
         String startdateStr = request.getParameter("startdate");
         String enddateStr = request.getParameter("enddate");
-        if (startdateStr != null && !startdateStr.trim().equals("")) {
-            startdate = Timestamp.valueOf(startdateStr);
+        System.out.println("startdatestr:"+startdateStr+"@@"+enddateStr);
+        if (startdateStr == null || startdateStr.trim().equals("")) {
+            startdate = null;
         }
-        if (enddateStr != null && !enddateStr.trim().equals("")) {
-            enddate = Timestamp.valueOf(enddateStr);
+        if (enddateStr == null || enddateStr.trim().equals("")) {
+            enddate = null;
         }
 
-        List<Product> productList = ProductManager.getInstance().getProductDAO().findProducts(ids, keyword, lowNormalPrice, highNormalPrice, lowMemberPrice, highMemberPrice, startdate, enddate, 1, 3);
+        List<Product> productList = new ArrayList<>();
+        int pageCount = ProductManager.getInstance().getProductDAO().findProducts(productList,ids, keyword, lowNormalPrice, highNormalPrice, lowMemberPrice, highMemberPrice, startdate, enddate, pageNo, 5);
         System.out.println("productList.size():" + productList.size());
  %>
         <table border="1" align="center">
@@ -66,6 +78,14 @@
                 }
             %>
         </table>
+<div align="center">
+    第<%=pageNo%>页&nbsp;
+    共<%=pageCount%>页&nbsp;
+    <a href="searchproduct.jsp?action=<%=action%>&pageNo=1&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">首页</a>&nbsp;
+    <a href="searchproduct.jsp?action=<%=action%>&pageNo=<%=pageNo-1 < 1 ? 1 : pageNo-1 %>&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">上一页</a>&nbsp;
+    <a href="searchproduct.jsp?action=<%=action%>&pageNo=<%=pageNo+1 > pageCount ? pageCount : pageNo+1%>&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">下一页</a>&nbsp;
+    <a href="searchproduct.jsp?action=<%=action%>&pageNo=<%=pageCount%>&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">末页</a>
+</div>
 <%
         return;
     }
