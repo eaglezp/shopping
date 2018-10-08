@@ -3,7 +3,8 @@
 <%@ page import="com.eagle.entity.Product" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.sql.Timestamp" %>
-<%@ page import="com.eagle.XManager.ProductManager" %><%--
+<%@ page import="com.eagle.XManager.ProductManager" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Peng
   Date: 2018/10/7
@@ -13,6 +14,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="_sessioncheck.jsp"%>
 <%
+    List<Category> categoryList = CategoryDao.getCategories();
     String action = request.getParameter("action");
     if(action != null && action.equals("addproduct")){
         String name = new String(request.getParameter("name").getBytes("ISO8859-1"),"utf-8");
@@ -57,8 +59,23 @@
             <td><input type="text" name="memberprice"/></td>
         </tr>
         <tr>
-            <td>产品ID:</td>
-            <td><input type="text" name="categoryid"/></td>
+            <td>类别:</td>
+            <%--<td><input type="text" name="categoryid"/></td>--%>
+            <td>
+                <select name="categoryid">
+                    <%
+                        for(Category category : categoryList){
+                            String preStr ="";
+                            for(int i=1;i<category.getGrade();i++){
+                                preStr += "--";
+                            }
+                    %>
+                            <option value="<%=category.getId()%>"><%=preStr+category.getName()%></option>
+                    <%
+                        }
+                    %>
+                </select>
+            </td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" value="提交"/></td>

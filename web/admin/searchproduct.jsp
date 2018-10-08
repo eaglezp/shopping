@@ -131,7 +131,7 @@
                                 preStr += "--";
                             }
                     %>
-                            <option name="categoryid" value="<%=category.getId()%>"><%=preStr+category.getName()%></option>
+                            <option value="<%=category.getId()%>"><%=preStr+category.getName()%></option>
                     <%
                         }
                     %>
