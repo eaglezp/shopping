@@ -3,20 +3,20 @@ package com.eagle.entity;
 
 public class Product {
 
-  private long id;
+  private int id;
   private String name;
   private String descr;
   private double normalprice;
   private double memberprice;
   private java.sql.Timestamp pdate;
-  private long categoryid;
+  private int categoryid;
 
 
   public long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -66,11 +66,11 @@ public class Product {
   }
 
 
-  public long getCategoryid() {
+  public int getCategoryid() {
     return categoryid;
   }
 
-  public void setCategoryid(long categoryid) {
+  public void setCategoryid(int categoryid) {
     this.categoryid = categoryid;
   }
 
