@@ -145,10 +145,6 @@ public class ProductDAO {
                 sql +=") ";
             }
 
-            if(keyword != null && !keyword.trim().equals("")){
-                sql += " and p.name like '%"+keyword+"%'"+" or p.descr like '%"+keyword+"%'";
-            }
-
             if(lowNormalPrice >= 0){
                 sql += " and normalprice >="+lowNormalPrice;
             }
@@ -168,7 +164,12 @@ public class ProductDAO {
             if(endDate != null){
                 sql += " and pdate <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endDate)+"'";
             }
-            sql += "limit "+(pageNo-1)*pageSize+","+pageSize;
+
+            if(keyword != null && !keyword.trim().equals("")){
+                sql += " and p.name like '%"+keyword+"%'"+" or p.descr like '%"+keyword+"%'";
+            }
+
+            sql += " limit "+(pageNo-1)*pageSize+","+pageSize;
             System.out.println("sql-----"+sql);
 
 
@@ -217,21 +218,17 @@ public class ProductDAO {
                 sql +=") ";
             }
 
-            if(keyword != null && !keyword.trim().equals("")){
-                sql += " and p.name like '%"+keyword+"%'"+" or p.descr like '%"+keyword+"%'";
-            }
-
             if(lowNormalPrice >= 0){
-                sql += " and normalprice >="+lowNormalPrice;
+                sql += " and normalprice >= "+lowNormalPrice;
             }
             if(highNormalPrice >= 0){
-                sql += " and normalprice <="+highNormalPrice;
+                sql += " and normalprice <= "+highNormalPrice;
             }
             if(lowMemberPrice >= 0){
-                sql += " and memberprice >="+lowMemberPrice;
+                sql += " and memberprice >= "+lowMemberPrice;
             }
             if(highMemberPrice >= 0){
-                sql += " and memberprice <="+highMemberPrice;
+                sql += " and memberprice <= "+highMemberPrice;
             }
 
             if(startDate != null){
@@ -241,10 +238,14 @@ public class ProductDAO {
                 sql += " and pdate <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endDate)+"'";
             }
 
+            if(keyword != null && !keyword.trim().equals("")){
+                sql += " and p.name like '%"+keyword+"%'"+" or p.descr like '%"+keyword+"%'";
+            }
+
             String countSql = sql.replaceFirst("select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid,c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade","select count(*)");
             System.out.println("countSql-----"+countSql);
 
-            sql += "limit "+(pageNo-1)*pageSize+","+pageSize;
+            sql += " limit "+(pageNo-1)*pageSize+","+pageSize;
             System.out.println("sql-----"+sql);
 
             ResultSet countResultSet = statement.executeQuery(countSql);
