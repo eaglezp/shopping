@@ -23,7 +23,7 @@
         if(pageNoStr != null && !pageNoStr.trim().equals("")){
             pageNo = Integer.parseInt(pageNoStr);
         }
-        if(pageNo < 0){
+        if(pageNo < 1){
             pageNo = 1;
         }
 
@@ -34,7 +34,12 @@
         double highMemberPrice = Double.parseDouble(request.getParameter("highmemberprice"));
         int categoryid = Integer.parseInt(request.getParameter("categoryid"));
         int[] ids = new int[1];
-        ids[0] = categoryid;
+        if(categoryid == 0){
+            ids = null;
+        } else {
+            ids[0] = categoryid;
+        }
+        System.out.println("categoryid:"+categoryid);
         Timestamp startdate = null;
         Timestamp enddate = null;
         String startdateStr = request.getParameter("startdate");
@@ -50,6 +55,9 @@
         List<Product> productList = new ArrayList<>();
         int pageCount = ProductManager.getInstance().getProductDAO().findProducts(productList,ids, keyword, lowNormalPrice, highNormalPrice, lowMemberPrice, highMemberPrice, startdate, enddate, pageNo, 5);
         System.out.println("productList.size():" + productList.size());
+        if(pageNo > pageCount){
+            pageNo = pageCount;
+        }
  %>
         <table border="1" align="center">
             <tr>
