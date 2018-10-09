@@ -26,8 +26,8 @@
         if(pageNo < 1){
             pageNo = 1;
         }
-
-        String keyword = new String(request.getParameter("keyword").getBytes("ISO8859-1"), "utf-8");
+        System.out.println(request.getParameter("keyword"));
+        String keyword = new String(request.getParameter("keyword").getBytes("iso8859-1"), "utf8");
         double lowNormalPrice = Double.parseDouble(request.getParameter("lownormalprice"));
         double highNormalPrice = Double.parseDouble(request.getParameter("highnormalprice"));
         double lowMemberPrice = Double.parseDouble(request.getParameter("lowmemberprice"));
@@ -90,7 +90,7 @@
     第<%=pageNo%>页&nbsp;
     共<%=pageCount%>页&nbsp;
     <a href="searchproduct.jsp?action=<%=action%>&pageNo=1&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">首页</a>&nbsp;
-    <a href="searchproduct.jsp?action=<%=action%>&pageNo=<%=pageNo-1 < 1 ? 1 : pageNo-1 %>&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">上一页</a>&nbsp;
+    <a href="searchproduct.jsp?action=<%=action%>&pageNo=<%=pageNo-1 < 0 ? 1 : pageNo-1 %>&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">上一页</a>&nbsp;
     <a href="searchproduct.jsp?action=<%=action%>&pageNo=<%=pageNo+1 > pageCount ? pageCount : pageNo+1%>&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">下一页</a>&nbsp;
     <a href="searchproduct.jsp?action=<%=action%>&pageNo=<%=pageCount%>&keyword=<%=keyword%>&lownormalprice=<%=lowNormalPrice%>&highnormalprice=<%=highNormalPrice%>&lowmemberprice=<%=lowMemberPrice%>&highmemberprice=<%=highMemberPrice%>&startdate=<%=startdate%>&enddate=<%=enddate%>&categoryid=<%=categoryid%>">末页</a>
 </div>
