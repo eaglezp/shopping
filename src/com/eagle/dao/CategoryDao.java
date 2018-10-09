@@ -137,12 +137,13 @@ public class CategoryDao {
 
     public static List<Category> getCategories(int pageNo,int pageSize) {
         List<Category> categories = new ArrayList<>();
-        Connection connection = null;
+        Connection connection = DB.getConn();
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             String sql = "select * from category limit "+(pageNo-1)*pageSize+","+pageSize;
             System.out.println("sql:"+sql);
+            statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             initCategoryFromResultSet(categories, resultSet);
         } catch (SQLException e) {
@@ -161,12 +162,10 @@ public class CategoryDao {
     }
 
 
-    public static List<Category> tree(List<Category> categories, int id){
-        Connection connection = null;
+    private static List<Category> tree(Connection connection,List<Category> categories, int id){
         Statement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = DB.getConn();
             statement = connection.createStatement();
             String sql = "select * from category where pid ="+id;
             System.out.println(sql);
@@ -181,7 +180,7 @@ public class CategoryDao {
                 category.setGrade(resultSet.getInt("grade"));
                 categories.add(category);
                 if (!category.isLeaf()) {
-                    tree(categories, category.getId());
+                    tree(connection,categories, category.getId());
                 }
             }
         }catch (SQLException e){
@@ -189,39 +188,16 @@ public class CategoryDao {
         }finally {
             DB.close(resultSet);
             DB.close(statement);
-            DB.close(connection);
         }
         return categories;
     }
 
     public static void getCategories(List<Category> categories, int id){
         Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
+        try{
             connection = DB.getConn();
-            statement = connection.createStatement();
-            String sql = "select * from category where pid ="+id;
-            System.out.println(sql);
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()){
-                Category category = new Category();
-                category.setId(resultSet.getInt("id"));
-                category.setPid(resultSet.getInt("pid"));
-                category.setName(resultSet.getString("name"));
-                category.setDescr(resultSet.getString("descr"));
-                category.setLeaf(resultSet.getInt("isleaf") == 1 ? true:false);
-                category.setGrade(resultSet.getInt("grade"));
-                categories.add(category);
-                if(!category.isLeaf()){
-                    getCategories(categories,category.getId());
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DB.close(resultSet);
-            DB.close(statement);
+            tree(connection,categories,id);
+        }finally {
             DB.close(connection);
         }
     }

@@ -59,7 +59,7 @@
                 <td align="center">市场价</td>
                 <td align="center">会员价</td>
                 <td align="center">上架日期</td>
-                <td align="center">类别ID</td>
+                <td align="center">类别</td>
             </tr>
             <%
                 for (Product product : productList){
@@ -71,7 +71,7 @@
                 <td><%=product.getNormalprice()%></td>
                 <td><%=product.getMemberprice()%></td>
                 <td><%=product.getPdate()%></td>
-                <td><%=product.getCategoryid()%></td>
+                <td><%=product.getCategory().getName()%></td>
             </tr>
 
             <%

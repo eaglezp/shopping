@@ -22,9 +22,7 @@ public class ProductDAO {
             try {
                 connection = DB.getConn();
                 statement = connection.createStatement();
-                String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, "
-                                    +"c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade "
-                             +"from product p join category c on p.categoryid=c.id";
+                String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade from product p join category c on p.categoryid=c.id";
                 System.out.println(sql);
                 resultSet = statement.executeQuery(sql);
                 initProductFromResult(productList,resultSet);
@@ -70,9 +68,7 @@ public class ProductDAO {
         try {
             connection = DB.getConn();
             statement = connection.createStatement();
-            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, "
-                    +"c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade "
-                    +"from product p join category c on p.categoryid=c.id";
+            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade from product p join category c on p.categoryid=c.id";
             sql += " limit "+(pageNo-1)*pageSize+","+ pageSize;
             System.out.println(sql);
             resultSet = statement.executeQuery(sql);
@@ -102,9 +98,7 @@ public class ProductDAO {
                 pageCount = (totalResultSet.getInt(1) + pageSize -1) / pageSize;
             }
 
-            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid, "
-                    +"c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade "
-                    +"from product p join category c on p.categoryid=c.id";
+            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid,c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade from product p join category c on p.categoryid=c.id ";
             sql += " limit "+(pageNo-1)*pageSize+","+ pageSize;
             System.out.println(sql);
             resultSet = statement.executeQuery(sql);
@@ -121,15 +115,15 @@ public class ProductDAO {
     }
 
     public List<Product> findProducts(int[] ids,
-                                             String keyword,
-                                             double lowNormalPrice,
-                                             double highNormalPrice,
-                                             double lowMemberPrice,
-                                             double highMemberPrice,
-                                             Date startDate,
-                                             Date endDate,
-                                             int pageNo,
-                                             int pageSize){
+                                     String keyword,
+                                     double lowNormalPrice,
+                                     double highNormalPrice,
+                                     double lowMemberPrice,
+                                     double highMemberPrice,
+                                     Date startDate,
+                                     Date endDate,
+                                     int pageNo,
+                                     int pageSize){
         List<Product> productList = new ArrayList<>();
         Connection connection = null;
         Statement statement = null;
@@ -137,10 +131,10 @@ public class ProductDAO {
         try {
             connection = DB.getConn();
             statement = connection.createStatement();
-            String sql = "select * from product where 1=1 ";
+            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid,c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade from product p join category c on p.categoryid=c.id where 1=1 ";
 
             if(ids != null && ids.length >0){
-                sql += " and categoryid in (";
+                sql += " and p.categoryid in (";
                 for(int i=0;i<ids.length;i++){
                     if(i<ids.length-1){
                         sql += ",";
@@ -152,7 +146,7 @@ public class ProductDAO {
             }
 
             if(keyword != null && !keyword.trim().equals("")){
-                sql += " and name like '%"+keyword+"%'"+" or descr like '%"+keyword+"%'";
+                sql += " and p.name like '%"+keyword+"%'"+" or p.descr like '%"+keyword+"%'";
             }
 
             if(lowNormalPrice >= 0){
@@ -209,10 +203,10 @@ public class ProductDAO {
         try {
             connection = DB.getConn();
             statement = connection.createStatement();
-            String sql = "select * from product where 1=1 ";
+            String sql = "select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid,c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade from product p join category c on p.categoryid=c.id where 1=1 ";
 
             if(ids != null && ids.length >0){
-                sql += " and categoryid in (";
+                sql += " and p.categoryid in (";
                 for(int i=0;i<ids.length;i++){
                     if(i<ids.length-1){
                         sql += ",";
@@ -224,7 +218,7 @@ public class ProductDAO {
             }
 
             if(keyword != null && !keyword.trim().equals("")){
-                sql += " and name like '%"+keyword+"%'"+" or descr like '%"+keyword+"%'";
+                sql += " and p.name like '%"+keyword+"%'"+" or p.descr like '%"+keyword+"%'";
             }
 
             if(lowNormalPrice >= 0){
@@ -247,7 +241,7 @@ public class ProductDAO {
                 sql += " and pdate <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endDate)+"'";
             }
 
-            String countSql = sql.replaceFirst("select \\*","select count(*)");
+            String countSql = sql.replaceFirst("select p.id,p.name,p.descr,p.normalprice,p.memberprice,p.pdate,p.categoryid,c.id cid,c.name cname,c.pid,c.descr cdescr,c.isleaf,c.grade","select count(*)");
             System.out.println("countSql-----"+countSql);
 
             sql += "limit "+(pageNo-1)*pageSize+","+pageSize;
@@ -269,6 +263,7 @@ public class ProductDAO {
         }
         return pageCount;
     }
+
 
     public List<Product> findProducts(String name){
         List<Product> productList = new ArrayList<>();
