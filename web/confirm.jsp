@@ -23,54 +23,66 @@
     <title>订单确认</title>
 </head>
 <body>
-<form action="cart_update.jsp" method="post">
-    <table align="center" border="1">
-        <h4 align="center" >商品清单</h4>
-        <tr>
-            <td align="center">商品ID</td>
-            <td align="center">商品名称</td>
-            <td align="center">商品单价(<%= user == null ? "市场价":"会员价"%>)</td>
-            <td align="center">购买数量</td>
-            <td align="center">小计</td>
-        </tr>
+<table align="center" border="1">
+    <h4 align="center" >商品清单</h4>
+    <tr>
+        <td align="center">商品ID</td>
+        <td align="center">商品名称</td>
+        <td align="center">商品单价(<%= user == null ? "市场价":"会员价"%>)</td>
+        <td align="center">购买数量</td>
+        <td align="center">小计</td>
+    </tr>
 
-        <%
-            List<CartItem> cartItemList = cart.getCartItemList();
-            System.out.println(cartItemList);
-            for(CartItem cartItem :cartItemList){
-                Product product = ProductManager.getInstance().getProductDAO().loadProductById(cartItem.getProductId());
-        %>
-        <tr>
-            <td align="center"><%=cartItem.getProductId()%></td>
-            <td align="center"><%=cartItem.getProductName()%></td>
-            <td align="center"><%=user == null ? product.getNormalprice() : product.getMemberprice()%></td>
-            <td align="center"><%=cartItem.getCount()%></td>
-            <td align="center"><%=user == null ? cartItem.getTotalPriceMap().get("normalPrice") : cartItem.getTotalPriceMap().get("memberPrice")%></td>
-        </tr>
-        <%
-            }
-        %>
-    </table>
-    <div align="center">
-        <%
-            double totalItemNormalPrice = 0;
-            double totalItemMemberlPrice = 0;
-            Map<String, Map<String,Double>> priceMap = cart.getTotalPriceMap();
-            for(Map.Entry<String,Map<String,Double>> complexentry : priceMap.entrySet()){
-                for(Map.Entry<String,Double> simpleentry : complexentry.getValue().entrySet()){
-                    if(simpleentry.getKey().equals("normalPrice")){
-                        totalItemNormalPrice += simpleentry.getValue();
-                        System.out.println("totalItemNormalPrice==="+totalItemNormalPrice);
-                    }
-                    if(simpleentry.getKey().equals("memberPrice")){
-                        totalItemMemberlPrice += simpleentry.getValue();
-                        System.out.println("totalItemMemberlPrice-----"+totalItemMemberlPrice);
-                    }
+    <%
+        List<CartItem> cartItemList = cart.getCartItemList();
+        System.out.println(cartItemList);
+        for(CartItem cartItem :cartItemList){
+            Product product = ProductManager.getInstance().getProductDAO().loadProductById(cartItem.getProductId());
+    %>
+    <tr>
+        <td align="center"><%=cartItem.getProductId()%></td>
+        <td align="center"><%=cartItem.getProductName()%></td>
+        <td align="center"><%=user == null ? product.getNormalprice() : product.getMemberprice()%></td>
+        <td align="center"><%=cartItem.getCount()%></td>
+        <td align="center"><%=user == null ? cartItem.getTotalPriceMap().get("normalPrice") : cartItem.getTotalPriceMap().get("memberPrice")%></td>
+    </tr>
+    <%
+        }
+    %>
+</table>
+<div align="center">
+    <%
+        double totalItemNormalPrice = 0;
+        double totalItemMemberlPrice = 0;
+        Map<String, Map<String,Double>> priceMap = cart.getTotalPriceMap();
+        for(Map.Entry<String,Map<String,Double>> complexentry : priceMap.entrySet()){
+            for(Map.Entry<String,Double> simpleentry : complexentry.getValue().entrySet()){
+                if(simpleentry.getKey().equals("normalPrice")){
+                    totalItemNormalPrice += simpleentry.getValue();
+                    System.out.println("totalItemNormalPrice==="+totalItemNormalPrice);
+                }
+                if(simpleentry.getKey().equals("memberPrice")){
+                    totalItemMemberlPrice += simpleentry.getValue();
+                    System.out.println("totalItemMemberlPrice-----"+totalItemMemberlPrice);
                 }
             }
-        %>
-        合计：<%=user == null ? totalItemNormalPrice : totalItemMemberlPrice%>元
-    </div>
-</form>
+        }
+    %>
+    合计：<%=user == null ? totalItemNormalPrice : totalItemMemberlPrice%>元<br>
+    <hr width="50%">
+    <%
+        if(user != null){
+            %>
+            欢迎<%=user.getUsername()%>,请确认收货信息，<br>
+    <%
+        }
+    %>
+    <form action="order.jsp" method="post">
+        收货地址：<br>
+        <textarea name="addr" cols="50" rows="10"><%=user == null ? "":user.getAddr()%></textarea>
+        <br>
+        <input type="submit" value="下单">
+    </form>
+</div>
 </body>
 </html>
