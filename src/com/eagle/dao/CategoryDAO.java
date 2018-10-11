@@ -1,16 +1,13 @@
 package com.eagle.dao;
 
 import com.eagle.entity.Category;
-import com.eagle.entity.User;
-import com.eagle.excepton.PasswordNotCorrection;
-import com.eagle.excepton.UserNotFoundException;
 import com.eagle.util.DB;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDao {
+public class CategoryDAO {
 
     public static Category loadCategoryById(int id){
         Connection connection = null;
@@ -204,7 +201,7 @@ public class CategoryDao {
 
 
     public static void addCategory(Category category){
-        CategoryDao.saveCategory(category);
+        CategoryDAO.saveCategory(category);
     }
 
     public static void addTopCategory(String name, String descr){

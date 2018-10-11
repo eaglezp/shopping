@@ -1,5 +1,5 @@
 <%@ page import="com.eagle.entity.Category" %>
-<%@ page import="com.eagle.dao.CategoryDao" %>
+<%@ page import="com.eagle.dao.CategoryDAO" %>
 <%--
   Created by IntelliJ IDEA.
   User: Peng
@@ -20,9 +20,9 @@
         String name = new String(request.getParameter("name").getBytes("ISO8859-1"),"utf-8");
         String descr = new String(request.getParameter("descr").getBytes("ISO8859-1"), "utf-8");
         if(pid == 0){
-            CategoryDao.addTopCategory(name,descr);
+            CategoryDAO.addTopCategory(name,descr);
         }else{
-            CategoryDao.addChildCategory(pid,name,descr);
+            CategoryDAO.addChildCategory(pid,name,descr);
 
         }
 

@@ -6,7 +6,7 @@
   Time: 14:48
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%
     User user = (User)session.getAttribute("user");
     if(user == null){
@@ -14,12 +14,13 @@
     }
 %>
 <%
+    request.setCharacterEncoding("UTF-8");
     String action = request.getParameter("action");
     if(action != null && action.equals("modify")){
-        String username = new String(request.getParameter("username").getBytes("ISO8859-1"),"utf-8");
+        String username = request.getParameter("username");
         String password = request.getParameter("pwd");
         String phone = request.getParameter("phone");
-        String addr = new String(request.getParameter("addr").getBytes("ISO8859-1"), "utf-8");
+        String addr = request.getParameter("addr");
         user.setUsername(username);
         user.setPassword(password);
         user.setPhoneNum(phone);

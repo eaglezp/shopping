@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="com.eagle.entity.CartItem" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %><%--
@@ -7,7 +8,7 @@
   Time: 20:57
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+
 
 <jsp:useBean id="cart" class="com.eagle.entity.Cart" scope="session"/>
     <%
@@ -71,7 +72,7 @@
         %>
         合计：<%=totalItemNormalPrice%>元<br>
         <input type="submit" value="修改数量">
-        <input type="button" onclick="document.location.href='confirm.jsp'" value="确认订单"></div>
+        <input type="button" onclick="document.location.href='cart_confirm.jsp'" value="确认订单"></div>
     </div>
 </form>
 </body>

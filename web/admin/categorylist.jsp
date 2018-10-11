@@ -1,5 +1,5 @@
 <%@ page import="com.eagle.entity.Category" %>
-<%@ page import="com.eagle.dao.CategoryDao" %>
+<%@ page import="com.eagle.dao.CategoryDAO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%--
@@ -22,7 +22,7 @@
         pageNo = 1;
     }
     List<Category> categoryList = new ArrayList<>();
-    int pageCount = CategoryDao.getCategories(categoryList,pageNo,PAGE_SIZE);
+    int pageCount = CategoryDAO.getCategories(categoryList,pageNo,PAGE_SIZE);
     if(pageNo > pageCount){
         pageNo = pageCount;
     }

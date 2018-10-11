@@ -2,7 +2,7 @@
 <%@ page import="com.eagle.XManager.ProductManager" %>
 <%@ page import="com.eagle.entity.Category" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.eagle.dao.CategoryDao" %>
+<%@ page import="com.eagle.dao.CategoryDAO" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -76,7 +76,7 @@
         <td>
             <select name="categoryid">
                 <%
-                    List<Category> categoryList = CategoryDao.getCategories();
+                    List<Category> categoryList = CategoryDAO.getCategories();
                     for(Category category : categoryList){
                         String preStr = "";
                         for(int i=1;i<category.getGrade();i++){

@@ -7,7 +7,7 @@ public class ProductManager {
 
     private static ProductManager productManager = null;
 
-    private ProductManager(){};
+    private ProductManager(){}
 
     static {
         if(productManager == null){
@@ -22,7 +22,7 @@ public class ProductManager {
 
 
 
-    ProductDAO productDAO = null;
+    private ProductDAO productDAO = null;
 
     public ProductDAO getProductDAO() {
         return productDAO;

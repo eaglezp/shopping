@@ -1,12 +1,14 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ page import="com.eagle.entity.User" %>
 <%@ page import="com.eagle.dao.UserDao" %>
 <%
+    request.setCharacterEncoding("UTF-8");
     String action = request.getParameter("action");
     if(action != null && action.equals("register")){
-        String username = new String(request.getParameter("username").getBytes("ISO8859-1"),"utf-8");
+        String username = request.getParameter("username");
         String password = request.getParameter("pwd");
         String phone = request.getParameter("phone");
-        String addr = new String(request.getParameter("addr").getBytes("ISO8859-1"), "utf-8");
+        String addr = request.getParameter("addr");
         User user = new User(username,password,phone,addr);
         UserDao.saveUser(user);
         return;

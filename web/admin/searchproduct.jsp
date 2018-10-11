@@ -2,7 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.eagle.XManager.ProductManager" %>
 <%@ page import="com.eagle.entity.Category" %>
-<%@ page import="com.eagle.dao.CategoryDao" %>
+<%@ page import="com.eagle.dao.CategoryDAO" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.util.ArrayList" %>
 <%--
@@ -15,7 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="_sessioncheck.jsp"%>
 <%
-    List<Category> categoryList = CategoryDao.getCategories();
+    List<Category> categoryList = CategoryDAO.getCategories();
     String action = request.getParameter("action");
     if(action != null && action.equals("complexsearch")) {
         int pageNo = 1;

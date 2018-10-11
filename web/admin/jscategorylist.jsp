@@ -9,10 +9,10 @@
 <%@include file="_sessioncheck.jsp"%>
 <%@page import="com.eagle.entity.Category" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.eagle.dao.CategoryDao" %>
+<%@ page import="com.eagle.dao.CategoryDAO" %>
 <%@ page import="java.util.Iterator" %>
 <%
-    List<Category> categoryList = CategoryDao.getCategories();
+    List<Category> categoryList = CategoryDAO.getCategories();
 %>
 <html>
 <head>

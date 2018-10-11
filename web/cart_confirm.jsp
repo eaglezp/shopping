@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ page import="com.eagle.entity.User" %>
 <%@ page import="com.eagle.entity.CartItem" %>
 <%@ page import="java.util.List" %>
@@ -10,9 +11,9 @@
   Time: 22:28
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <jsp:useBean id="cart" class="com.eagle.entity.Cart" scope="session"/>
 <%
+    request.setCharacterEncoding("UTF-8");
     User user = (User)session.getAttribute("user");
     if(user == null){
         response.getWriter().print("你尚未<a href='login.jsp'>登陆</a>");
@@ -77,7 +78,7 @@
     <%
         }
     %>
-    <form action="order.jsp" method="post">
+    <form action="order_deal.jsp" method="post">
         收货地址：<br>
         <textarea name="addr" cols="50" rows="10"><%=user == null ? "":user.getAddr()%></textarea>
         <br>

@@ -1,5 +1,5 @@
 <%@ page import="com.eagle.entity.Category" %>
-<%@ page import="com.eagle.dao.CategoryDao" %>
+<%@ page import="com.eagle.dao.CategoryDAO" %>
 <%@ page import="com.eagle.entity.Product" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.sql.Timestamp" %>
@@ -19,7 +19,7 @@
     if(categoryidStr != null && !categoryidStr.trim().equals("")){
         categoryid = Integer.parseInt(categoryidStr);
     }
-    List<Category> categoryList = CategoryDao.getCategories();
+    List<Category> categoryList = CategoryDAO.getCategories();
     String action = request.getParameter("action");
     if(action != null && action.equals("addproduct")){
         String name = new String(request.getParameter("name").getBytes("ISO8859-1"),"utf-8");
