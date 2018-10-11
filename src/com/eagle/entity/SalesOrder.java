@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class SalesOrder {
 
+    private int id;
     private User user;
     private String addr;
     private Timestamp odate;
@@ -13,12 +14,12 @@ public class SalesOrder {
     public SalesOrder() {
     }
 
-    public SalesOrder(User user, String addr, Timestamp odate, Cart cart, int status) {
-        this.user = user;
-        this.addr = addr;
-        this.odate = odate;
-        this.cart = cart;
-        this.status = status;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -64,7 +65,8 @@ public class SalesOrder {
     @Override
     public String toString() {
         return "SalesOrder{" +
-                "user=" + user +
+                "id=" + id +
+                ", user=" + user +
                 ", addr='" + addr + '\'' +
                 ", odate=" + odate +
                 ", cart=" + cart +

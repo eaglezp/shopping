@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class Cart {
 
+    private List<CartItem> cartItemList = new ArrayList<>();
+
     public Cart() {
     }
 
@@ -14,7 +16,6 @@ public class Cart {
         this.cartItemList = cartItemList;
     }
 
-    private List<CartItem> cartItemList = new ArrayList<>();
 
     public List<CartItem> getCartItemList() {
         return cartItemList;
