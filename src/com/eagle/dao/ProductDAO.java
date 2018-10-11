@@ -388,10 +388,10 @@ public class ProductDAO {
         return result;
     }
 
-    public boolean addProduct(Product product) {
+    public int addProduct(Product product) {
         Connection connection = null;
         PreparedStatement pstmt = null;
-        boolean result = false;
+        int result = 0;
         try {
             connection = DB.getConn();
             String sql = "insert into product values(null,?,?,?,?,?,?)";
@@ -402,7 +402,7 @@ public class ProductDAO {
             pstmt.setDouble(4, product.getMemberprice());
             pstmt.setTimestamp(5, product.getPdate());
             pstmt.setInt(6, product.getCategoryid());
-            result = pstmt.execute();
+            result = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

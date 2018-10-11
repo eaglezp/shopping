@@ -59,8 +59,8 @@ public class CategoryDAO {
             pstmt.setString(3, descr);
             pstmt.setInt(4, 1);
             pstmt.setInt(5, parentGrade+1);
-            pstmt.execute();
-            //���¸��ڵ�isleaf
+            pstmt.executeUpdate();
+            //更新父节点
             DB.executeUpdate(statement,"update category set isleaf = 0 where id="+pid);
             connection.commit();
             connection.setAutoCommit(true);
@@ -229,7 +229,7 @@ public class CategoryDAO {
             pstmt.setString(3, category.getDescr());
             pstmt.setInt(4, category.getGrade());
             pstmt.setInt(5, category.isLeaf() ? 1:0);
-            pstmt.execute();
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

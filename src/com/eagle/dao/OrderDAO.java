@@ -10,11 +10,11 @@ import java.util.List;
 
 public class OrderDAO {
 
-    public boolean saveOrder(SalesOrder salesOrder){
+    public int saveOrder(SalesOrder salesOrder){
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet resultSetKey = null;
-        boolean result = false;
+        int result = 0;
         try {
             connection = DB.getConn();
             connection.setAutoCommit(false);
@@ -24,7 +24,7 @@ public class OrderDAO {
             pstmt.setString(2, salesOrder.getAddr());
             pstmt.setTimestamp(3, salesOrder.getOdate());
             pstmt.setInt(4, salesOrder.getStatus());
-            result = pstmt.execute();
+            result = pstmt.executeUpdate();
             resultSetKey = pstmt.getGeneratedKeys();
             resultSetKey.next();
             int key = resultSetKey.getInt(1);

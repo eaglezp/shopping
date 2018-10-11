@@ -16,7 +16,7 @@
 <%
     request.setCharacterEncoding("UTF-8");
    String productId = request.getParameter("id");
-   Product product = ProductManager.getInstance().getProductDAO().loadProductById(productId);
+   Product product = ProductManager.getInstance().getProductDAO().loadProductById(Integer.parseInt(productId));
 %>
 
 <%

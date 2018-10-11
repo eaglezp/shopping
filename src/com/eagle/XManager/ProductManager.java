@@ -32,7 +32,7 @@ public class ProductManager {
         this.productDAO = productDAO;
     }
 
-    public boolean addProduct(Product product){
+    public int addProduct(Product product){
         return productDAO.addProduct(product);
     }
 }

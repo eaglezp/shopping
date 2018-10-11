@@ -18,7 +18,8 @@
             return;
         }
         session.setAttribute("user", user);
-        response.sendRedirect("selfservice.jsp?id="+user.getId());
+        response.sendRedirect("index.jsp");
+        //response.sendRedirect("selfservice.jsp?id="+user.getId());
     }
 %>
 <!DOCTYPE HTML>

@@ -31,8 +31,9 @@
         user.setId(-1);
     }
     salesOrder.setUser(user);
-    boolean isOk = OrderManager.getInstance().getOrderDAO().saveOrder(salesOrder);
-    if(isOk){
+    int result = OrderManager.getInstance().getOrderDAO().saveOrder(salesOrder);
+    System.out.println(result);
+    if(result != 0){
         session.removeAttribute("cart");
     }
 %>
