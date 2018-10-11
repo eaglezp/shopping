@@ -32,6 +32,9 @@
     }
     salesOrder.setUser(user);
     boolean isOk = OrderManager.getInstance().getOrderDAO().saveOrder(salesOrder);
+    if(isOk){
+        session.removeAttribute("cart");
+    }
 %>
 <html>
 <head>
