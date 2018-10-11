@@ -63,7 +63,7 @@ public class CategoryDao {
             pstmt.setInt(4, 1);
             pstmt.setInt(5, parentGrade+1);
             pstmt.execute();
-            //¸üÐÂ¸¸½Úµãisleaf
+            //ï¿½ï¿½ï¿½Â¸ï¿½ï¿½Úµï¿½isleaf
             DB.executeUpdate(statement,"update category set isleaf = 0 where id="+pid);
             connection.commit();
             connection.setAutoCommit(true);

@@ -2,7 +2,6 @@
 <%@ page import="com.eagle.entity.Product" %>
 <%@ page import="com.eagle.XManager.ProductManager" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.eagle.dao.CategoryDao" %>
 <%--
   Created by IntelliJ IDEA.
   User: Peng

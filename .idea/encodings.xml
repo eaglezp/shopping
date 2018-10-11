@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" defaultCharsetForPropertiesFiles="GB2312">
-    <file url="file://$PROJECT_DIR$/src/com/eagle/XManager/ProductManager.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/web/admin/adminindex.jsp" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/web/admin/admintree.html" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/login.jsp" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/menu.html" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/script/TV20.js" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/script/regcheckdata.js" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/script/style.css" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/script/toc.css" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/title.html" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/admin/top.html" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/index.jsp" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/web/register.jsp" charset="GB2312" />
-    <file url="PROJECT" charset="GB2312" />
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/src/com/eagle/dao/CategoryDao.java" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

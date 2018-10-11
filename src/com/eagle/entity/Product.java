@@ -20,7 +20,7 @@ public class Product {
     this.category = category;
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
@@ -82,4 +82,17 @@ public class Product {
     this.categoryid = categoryid;
   }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", descr='" + descr + '\'' +
+                ", normalprice=" + normalprice +
+                ", memberprice=" + memberprice +
+                ", pdate=" + pdate +
+                ", categoryid=" + categoryid +
+                ", category=" + category +
+                '}';
+    }
 }
