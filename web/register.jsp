@@ -19,6 +19,40 @@
 	<head>
 		<title>UserRegister</title>
 		<script language=JavaScript src="admin/script/regcheckdata.js"></script>
+		<script>
+            var req;
+			function validateUserName() {
+			    var username = document.getElementById("username");
+                var url = "validate.jsp?username="+escape(username.value);
+                if(window.XMLHttpRequest){
+                    req = new XMLHttpRequest();
+                } else if(window.ActiveXObject){
+                    req = ActiveXObject("Mircosoft.XMLHttp");
+                }
+                req.open("GET",url,true);
+                req.onreadystatechange=callback;
+                req.send(null);
+            }
+
+            function callback() {
+                if(req.readyState == 4){
+                    if(req.status == 200){
+                        //alert(req.responseText);
+                        var msg = req.responseXML.getElementsByTagName("msg")[0];
+                        setMsg(msg.childNodes[0].nodeValue);
+                    }
+                }
+            }
+
+            function setMsg(msg) {
+			    if(msg == 0){
+                    document.getElementById("msg").innerHTML = "<font color='#32cd32'>用户名可用</font>";
+                }else{
+                    document.getElementById("msg").innerHTML = "<font color='red'>用户名已存在</font>";
+                }
+            }
+
+		</script>
 	</head>
 	<body>
 		<form name="form" action="register.jsp" method="post" onSubmit="return checkdata()">
@@ -30,7 +64,8 @@
 				<tr>
 					<td align="center">Username</td>
 					<td>
-						<input type=text name="username" size="30" maxlength="10">
+						<input type=text name="username" id="username" size="30" maxlength="10" onblur="validateUserName();">
+                        <span id="msg"></span>
 					</td>
 				</tr>
 				<tr>
