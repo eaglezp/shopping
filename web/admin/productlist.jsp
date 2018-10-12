@@ -58,7 +58,9 @@
         <td><%=product.getCategory().getName()%></td>
         <td>
             <a href="deleteproduct.jsp?id=<%=product.getId()%>">删除</a>&nbsp;
-            <a href="modifyproduct.jsp?id=<%=product.getId()%>">修改</a>
+            <a href="modifyproduct.jsp?id=<%=product.getId()%>">修改</a>&nbsp;
+            <a href="productimageupload.jsp?id=<%=product.getId()%>">图片上传</a>&nbsp;
+
         </td>
     </tr>
 

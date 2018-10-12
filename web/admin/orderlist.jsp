@@ -53,8 +53,8 @@
         <td><%=order.getStatus()%></td>
         <td><%=order.getAddr()%></td>
         <td>
-            <a href="deleteorder.jsp?id=<%=order.getId()%>">删除</a>&nbsp;
-            <a href="modifyorder.jsp?id=<%=order.getId()%>">修改</a>
+            <a href="orderdetail.jsp?id=<%=order.getId()%>">订单详情</a>&nbsp;
+            <a href="ordermodify.jsp?id=<%=order.getId()%>">订单修改</a>&nbsp;
         </td>
     </tr>
 
